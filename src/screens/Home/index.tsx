@@ -1,13 +1,29 @@
 import React, { useState } from "react";
-import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  FlatList,
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { PlusCircle } from "phosphor-react-native";
 
 import Logo from "../../assets/Logo.png";
 
 import { styles } from "./styles";
+import { Task } from "../../components/Task";
 
 export function Home() {
-  const [participantName, setParticipantName] = useState("");
+  const [task, setTask] = useState<string[]>([]);
+  const [descriptionTask, setDescriptionTask] = useState("");
+
+  function handleTaskAdd() {
+    setTask((prevState) => [...prevState, descriptionTask]);
+    setDescriptionTask("");
+  }
+
   return (
     <View style={styles.container}>
       <Image source={Logo} style={styles.logo} />
@@ -16,10 +32,10 @@ export function Home() {
           style={styles.input}
           placeholder='Nombre de participante'
           placeholderTextColor='#808080'
-          onChangeText={setParticipantName}
-          value={participantName}
+          onChangeText={setDescriptionTask}
+          value={descriptionTask}
         />
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleTaskAdd}>
           <PlusCircle size={24} color='white' />
         </TouchableOpacity>
       </View>
@@ -43,6 +59,21 @@ export function Home() {
               <Text style={styles.count}>0</Text>
             </View>
           </View>
+        </View>
+        <View style={styles.flatList}>
+          <FlatList
+            data={task}
+            keyExtractor={(item) => item}
+            renderItem={({ item }) => (
+              <Task
+                key={item}
+                description={item}
+                onChecked={() => {}}
+                onRemove={() => {}}
+              />
+            )}
+            showsVerticalScrollIndicator={false}
+          />
         </View>
       </View>
     </View>

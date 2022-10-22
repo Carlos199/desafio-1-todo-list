@@ -5,7 +5,7 @@ import {
   Inter_700Bold,
 } from "@expo-google-fonts/inter";
 import { Home } from "./src/screens/Home";
-import { Loading } from "./src/componenst/Loading";
+import { Loading } from "./src/components/Loading";
 
 export default function App() {
   const [fontsLoaded] = useFonts({

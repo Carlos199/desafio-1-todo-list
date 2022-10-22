@@ -16,10 +16,8 @@ export const styles = StyleSheet.create({
   taskView:{
     flex: 1,
     backgroundColor:  '#454545',
-
   },
   task:{
-    flex: 1,
     paddingTop: 55,
     backgroundColor:  '#454545',
     paddingHorizontal: 24,
@@ -95,5 +93,17 @@ export const styles = StyleSheet.create({
     width: '90%',
     backgroundColor: 'red',
     height: 10
+  },
+  checkbox: {
+    margin: 8,
+    width: 24,
+    height:24,
+    borderRadius: 12,
+    padding: 9,
+    color: 'red'
+  },
+  flatList:{
+    marginTop: 20,
+    paddingHorizontal: 24
   }
 });
