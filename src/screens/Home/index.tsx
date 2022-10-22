@@ -24,6 +24,24 @@ export function Home() {
     setDescriptionTask("");
   }
 
+  function handleTaskRemove(description: string) {
+    Alert.alert("Remover", "Estas seguro de que quieres borrar este item ?", [
+      {
+        text: "Si",
+        onPress: () =>
+          setTask((prevState) =>
+            prevState.filter(
+              (descriptionTask) => descriptionTask !== description,
+            ),
+          ),
+      },
+      {
+        text: "No",
+        style: "cancel",
+      },
+    ]);
+  }
+
   return (
     <View style={styles.container}>
       <Image source={Logo} style={styles.logo} />
@@ -63,16 +81,21 @@ export function Home() {
         <View style={styles.flatList}>
           <FlatList
             data={task}
-            keyExtractor={(item) => item}
+            keyExtractor={(item, index) => item}
             renderItem={({ item }) => (
               <Task
                 key={item}
                 description={item}
                 onChecked={() => {}}
-                onRemove={() => {}}
+                onRemove={() => handleTaskRemove(item)}
               />
             )}
             showsVerticalScrollIndicator={false}
+            ListEmptyComponent={() => (
+              <Text style={styles.listEmptyText}>
+                No hay participantes? Añada participantes en su lista
+              </Text>
+            )}
           />
         </View>
       </View>
