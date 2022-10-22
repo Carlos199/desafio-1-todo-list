@@ -14,6 +14,7 @@ import Logo from "../../assets/Logo.png";
 
 import { styles } from "./styles";
 import { Task } from "../../components/Task";
+import { EmptyTask } from "../../components/EmptyTask";
 
 export function Home() {
   const [task, setTask] = useState<string[]>([]);
@@ -91,11 +92,7 @@ export function Home() {
               />
             )}
             showsVerticalScrollIndicator={false}
-            ListEmptyComponent={() => (
-              <Text style={styles.listEmptyText}>
-                No hay participantes? Añada participantes en su lista
-              </Text>
-            )}
+            ListEmptyComponent={() => <EmptyTask />}
           />
         </View>
       </View>
