@@ -29,16 +29,16 @@ export function Home() {
       setDescriptionTask("");
   }
 
-  function handleTaskRemove(description: string) {
+  function handleTaskRemove(taskId: number) {
     Alert.alert("Remover", "Estas seguro de que quieres borrar este task ?", [
       {
         text: "Si",
-        onPress: () =>
-          setTask((prevState: any[]) =>
-            prevState.filter(
-              (descriptionTask: string) => descriptionTask !== description,
-            ),
-          ),
+        onPress: () => {
+          const newTask = task.filter((item, key) => {
+            return key !== taskId;
+          });
+          setTask(newTask);
+        },
       },
       {
         text: "No",
@@ -111,7 +111,7 @@ export function Home() {
                 key={index}
                 description={item.description}
                 onChecked={() => handledFinished(index)}
-                onRemove={() => handleTaskRemove(item.description)}
+                onRemove={() => handleTaskRemove(index)}
                 finished={item.finished}
               />
             )}
