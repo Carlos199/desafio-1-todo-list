@@ -10,29 +10,33 @@ import {
 } from "react-native";
 import { PlusCircle } from "phosphor-react-native";
 
-import Logo from "../../assets/Logo.png";
-
-import { styles } from "./styles";
 import { Task } from "../../components/Task";
 import { EmptyTask } from "../../components/EmptyTask";
 
+import Logo from "../../assets/Logo.png";
+
+import { styles } from "./styles";
+
 export function Home() {
-  const [task, setTask] = useState<string[]>([]);
+  const [task, setTask] = useState<any[]>([]);
   const [descriptionTask, setDescriptionTask] = useState("");
 
   function handleTaskAdd() {
-    setTask((prevState) => [...prevState, descriptionTask]);
-    setDescriptionTask("");
+    setTask((prevState: any[]) => [
+      ...prevState,
+      { description: descriptionTask, finished: false },
+    ]),
+      setDescriptionTask("");
   }
 
   function handleTaskRemove(description: string) {
-    Alert.alert("Remover", "Estas seguro de que quieres borrar este item ?", [
+    Alert.alert("Remover", "Estas seguro de que quieres borrar este task ?", [
       {
         text: "Si",
         onPress: () =>
-          setTask((prevState) =>
+          setTask((prevState: any[]) =>
             prevState.filter(
-              (descriptionTask) => descriptionTask !== description,
+              (descriptionTask: string) => descriptionTask !== description,
             ),
           ),
       },
@@ -42,6 +46,25 @@ export function Home() {
       },
     ]);
   }
+
+  function handledFinished(taskId: number) {
+    const newTask = task.map((item, key) => {
+      if (key === taskId) {
+        return { ...item, finished: !item.finished };
+      }
+      return item;
+    });
+
+    setTask(newTask);
+  }
+
+  /* Counting the number of finished tasks. */
+  let count = 0;
+  task.map((item) => {
+    if (item.finished) {
+      count = count + 1;
+    }
+  });
 
   return (
     <View style={styles.container}>
@@ -66,7 +89,7 @@ export function Home() {
               <Text style={styles.infoTitle}>Creadas</Text>
             </View>
             <View style={styles.countView}>
-              <Text style={styles.count}>240</Text>
+              <Text style={styles.count}>{task.length - count}</Text>
             </View>
           </View>
 
@@ -75,20 +98,21 @@ export function Home() {
               <Text style={styles.emptyTitle}>Concluidas</Text>
             </View>
             <View style={styles.countView}>
-              <Text style={styles.count}>0</Text>
+              <Text style={styles.count}>{count}</Text>
             </View>
           </View>
         </View>
         <View style={styles.flatList}>
           <FlatList
             data={task}
-            keyExtractor={(item, index) => item}
-            renderItem={({ item }) => (
+            keyExtractor={(item) => item.description}
+            renderItem={({ item, index }) => (
               <Task
-                key={item}
-                description={item}
-                onChecked={() => {}}
-                onRemove={() => handleTaskRemove(item)}
+                key={index}
+                description={item.description}
+                onChecked={() => handledFinished(index)}
+                onRemove={() => handleTaskRemove(item.description)}
+                finished={item.finished}
               />
             )}
             showsVerticalScrollIndicator={false}
